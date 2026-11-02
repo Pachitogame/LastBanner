@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Last Banner · The war table</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="arena-shell">
+      <header>
+        <div class="brand">
+          <span class="brand-banner">L<span>B</span></span>
+          <div>
+            <small>A CHRONICLE OF FALLEN KINGDOMS</small>
+            <h1>LAST BANNER</h1>
+          </div>
+        </div>
+        <div class="badges">
+          <span id="mode"></span><span id="connection"></span>
+        </div>
+      </header>
+      <main>
+        <section class="turnbar">
+          <div class="turn-identity">
+            <span id="actor-banner" class="banner big"></span>
+            <div>
+              <small id="phase">LOBBY</small>
+              <h2 id="headline">Gather your banners</h2>
+              <p id="instruction"></p>
+            </div>
+          </div>
+          <div class="clock">
+            <small id="turn">TURN 0</small><b id="clock">—</b>
+            <div class="time-track"><i id="time-fill"></i></div>
+          </div>
+        </section>
+        <div class="layout">
+          <section class="map-panel">
+            <div class="section-title">
+              <h3>The contested lands</h3>
+              <span id="territories"></span>
+            </div>
+            <div id="map-stage">
+              <div class="compass" aria-hidden="true">N<br />✦</div>
+              <div id="map"></div>
+              <div id="lobby"></div>
+              <div id="victory" hidden></div>
+            </div>
+            <p id="frontier"></p>
+          </section>
+          <aside>
+            <section class="panel standings">
+              <div class="section-title">
+                <h3>Great houses</h3>
+                <button id="full-list">All banners</button>
+              </div>
+              <div id="ranking"></div>
+            </section>
+            <section class="panel result">
+              <small id="result-label">THE CHRONICLE</small>
+              <div id="result"></div>
+            </section>
+          </aside>
+        </div>
+        <footer>
+          <span class="footer-motto">ONE LAND. ONE LAST BANNER.</span>
+          <div class="view-controls">
+            <button id="audio-enable">Enable audio</button
+            ><label
+              >Music
+              <input
+                id="music"
+                type="range"
+                min="0"
+                max="100"
+                value="25" /></label
+            ><label
+              >Effects
+              <input
+                id="effects"
+                type="range"
+                min="0"
+                max="100"
+                value="40" /></label
+            ><label><input id="mute" type="checkbox" checked /> Mute</label
+            ><label><input id="motion" type="checkbox" /> Reduce motion</label
+            ><span id="audio-status">Audio off</span>
+          </div>
+        </footer>
+      </main>
+      <dialog id="roster">
+        <h2>All banners</h2>
+        <button id="close-list">Close</button>
+        <div id="all-ranking"></div>
+      </dialog>
+    </div>
+  </body>
+</html>

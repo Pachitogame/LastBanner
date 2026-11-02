@@ -1,0 +1,41 @@
+<!doctype html><meta charset="utf-8"><title>Last Banner · audio signal check</title>
+<style>body{background:#201e20;color:#fff;font:20px monospace;padding:32px}button{font:inherit;padding:12px}pre{white-space:pre-wrap}</style>
+<h1>Last Banner · development audio check</h1>
+<p>Measures actual Web Audio samples. Does not validate hearing or OBS recording.</p>
+<button id="run">Enable and measure audio</button><p id="status"></p><pre id="report">Ready. This test plays existing music and effects at their default levels.</pre>
+<script type="module">
+import {WarAudio} from '/audio.js';
+const status=document.querySelector('#status'), report=document.querySelector('#report');
+const a=new WarAudio(status);
+document.querySelector('#run').onclick=async()=>{
+ const out={gesture:navigator.userActivation.isActive, checks:[]};
+ try {
+ await a.enable();
+ async function measure(label){
+  const peaks={music:0,effects:0,output:0};
+  for(let i=0;i<48;i++){
+   await new Promise(r=>setTimeout(r,25)); a.report();
+   const data=JSON.parse(status.dataset.audio);
+   for(const key in peaks) peaks[key]=Math.max(peaks[key],data.peaks[key]);
+  }
+  out.checks.push({label,context:a.ctx.state,peaks});
+  report.textContent=JSON.stringify(out,null,2); return peaks;
+ }
+ a.controls(.25,0,false);a.state('game');
+ const music=await measure('music only');
+ a.controls(0,.4,false);a.state('final');
+ await new Promise(r=>setTimeout(r,1500));a.cue('sudden');
+ const effects=await measure('effects only');
+ a.controls(.25,.4,true);a.state('game');
+ await new Promise(r=>setTimeout(r,1500));
+ const mute=await measure('mute after envelope settles');
+ await a.ctx.suspend(); const step=a.step; await a.ctx.resume();
+ a.controls(.25,.4,false);
+ const resumed=await measure('resumed');
+ out.pass=out.gesture && music.output>1e-5 && effects.output>1e-5 && mute.output<1e-6 && resumed.output>1e-5 && a.step>step;
+ a.controls(.25,.4,true);
+ out.note='Generated signal measured, not listening or OBS recording. Test ends muted.';
+ report.textContent=JSON.stringify(out,null,2);
+ }catch(e){report.textContent=String(e.stack||e)}
+};
+</script>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Last Banner • Host</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body class="host">
+    <header>
+      <div class="brand">
+        <span class="sigil">⚑</span>
+        <div>
+          <small>LOCAL CONTROL ROOM</small>
+          <h1>LAST BANNER</h1>
+        </div>
+      </div>
+      <div class="badges">
+        <span id="mode"></span><span id="connection"></span
+        ><a href="http://localhost:3100" target="_blank">Open OBS view ↗</a>
+      </div>
+    </header>
+    <main>
+      <div class="controls">
+        <section class="panel">
+          <h3>Game setup</h3>
+          <label
+            >Mode<select id="mode-select">
+              <option>SIMULATED PLAYERS</option>
+              <option>FIXTURE</option>
+              <option>REAL TWITCH</option>
+            </select></label
+          ><button id="reset">New game / reset…</button>
+          <div class="row">
+            <input
+              id="count"
+              type="number"
+              min="1"
+              max="100"
+              value="6"
+              aria-label="Simulated player count"
+            /><button data-action="add">Add simulated players</button>
+          </div>
+          <div class="decision-settings">
+            <label
+              >Decision time
+              <input
+                id="decision-time"
+                type="number"
+                min="15"
+                max="120"
+                step="1"
+                value="30" /></label
+            ><button data-action="decision-time">Apply seconds</button>
+            <div class="row presets">
+              <button data-seconds="15">15s</button
+              ><button data-seconds="30">30s</button
+              ><button data-seconds="45">45s</button
+              ><button data-seconds="60">60s</button>
+            </div>
+            <small id="decision-setting">Locked when the match starts.</small>
+          </div>
+          <div class="row">
+            <button data-action="open">Open lobby</button
+            ><button data-action="close">Close lobby</button
+            ><button data-action="start">Start game</button>
+          </div>
+        </section>
+        <section class="panel">
+          <h3>Twitch connection</h3>
+          <label
+            >Broadcaster login<input
+              id="channel"
+              placeholder="your_channel"
+              autocomplete="off"
+          /></label>
+          <div class="row">
+            <button data-action="authorize">Authorize Twitch</button
+            ><button data-action="connect">Connect</button
+            ><button data-action="reconnect">Reconnect</button>
+          </div>
+          <p id="configuration">Dedicated Last Banner application required.</p>
+          <small>Never paste tokens or secrets into this page or chat.</small>
+        </section>
+        <section class="panel">
+          <h3>Playback & diagnosis</h3>
+          <div class="row">
+            <button data-action="pause">Pause</button
+            ><button data-action="resume">Resume</button
+            ><button data-action="next">Next simulated turn</button>
+          </div>
+          <div class="row">
+            <button data-action="fixture">Play fixture attack</button
+            ><button data-action="advance">Expire current test window</button>
+          </div>
+          <form id="command-form">
+            <input
+              id="command"
+              placeholder="!attack A1 B1"
+              aria-label="Simulated attack command"
+            /><button>Send as selected simulated player</button>
+          </form>
+          <a href="/host/api/export" download>Export event log</a>
+        </section>
+      </div>
+      <p id="feedback" role="status">
+        Local host. A full server restart ends the current game.
+      </p>
+      <section class="turnbar">
+        <div>
+          <small id="phase"></small>
+          <h2 id="headline"></h2>
+          <p id="instruction"></p>
+        </div>
+        <div class="clock"><b id="clock">—</b><small id="turn"></small></div>
+      </section>
+      <div class="layout">
+        <section class="map-panel">
+          <div class="section-title">
+            <h3>The frontier</h3>
+            <span id="territories"></span>
+          </div>
+          <div id="map-stage"><div id="map"></div></div>
+          <p id="frontier">
+            Select an origin, then an adjacent destination. Gray previews show
+            the entire component.
+          </p>
+          <div id="lobby"></div>
+        </section>
+        <aside>
+          <section class="panel">
+            <div class="section-title">
+              <h3>Standings</h3>
+              <button id="full-list">Full list</button>
+            </div>
+            <div id="ranking"></div>
+          </section>
+          <section class="panel result">
+            <small>LAST RESOLUTION</small>
+            <div id="result"></div>
+          </section>
+        </aside>
+      </div>
+      <footer>
+        <span>Simulation controls cannot send Twitch game commands.</span
+        ><label><input id="motion" type="checkbox" /> Reduce motion</label>
+      </footer>
+    </main>
+    <dialog id="roster">
+      <h2>All banners</h2>
+      <button id="close-list">Close</button>
+      <div id="all-ranking"></div>
+    </dialog>
+  </body>
+</html>
